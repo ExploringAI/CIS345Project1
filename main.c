@@ -5,13 +5,12 @@
 int main(int argc, char *argv[]) {
   printf("The early bird gets the worm!\n");
   int m;
+  sscanf(argv[1], "%d", &m);
   int n;
-  
+  sscanf(argv[2], "%d", &n);
 
-  //printf("Enter m\n");
-  scanf("%d", &m);
-  //printf("Enter n\n");
-  scanf("%d", &n);
+
+
 
   printf( "\nYou entered: m = %d, n = %d ", m, n);
 
