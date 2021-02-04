@@ -1,19 +1,63 @@
+//Name: thr_atomic.c
+#define _OPEN_THREADS
+#include <pthread.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 
-//Name: thr_atomic.c
+
+/**
+Each thread computes the
+sum of n/m quadruple roots. Namely, the first thread (i.e. thread 0) computes the sum of quadruple roots from
+1 to n/m, the second thread (i.e. thread 1) computes the sum of the quadruple roots from n/m+1 to 2n/m, etc.
+When a thread finishes its computation, it should print its partial sum and atomically add it to a shared global
+variable. 
+*/
+void *thread(void *arg) {
+  char *ret;
+
+
+  //printf("thread() entered with argument '%s' '%s'\n", arg[1], arg[2]);
+  if ((ret = (char*) malloc(20)) == NULL) {
+    perror("malloc() error");
+    exit(2);
+  }
+  strcpy(ret, "This is a test");
+  pthread_exit(ret);
+}
+
+
+
 
 int main(int argc, char *argv[]) {
   printf("The early bird gets the worm!\n");
+
+  /**gets the values m and n from the command line arguments and 
+  converts them to two integers, respectively.*/
   int m;
+  sscanf(argv[1], "%d", &m);
   int n;
-  
+  sscanf(argv[2], "%d", &n);
+  printf( "\nYou entered: m = %d, n = %d \n\n", m, n);
 
-  //printf("Enter m\n");
-  scanf("%d", &m);
-  //printf("Enter n\n");
-  scanf("%d", &n);
+  /**TODO: Next, it creates m threads using pthread create() and each thread 
+  computes the sum of n/m quadruple roots.*/
+  pthread_t thid;
+  void *ret;
 
-  printf( "\nYou entered: m = %d, n = %d ", m, n);
+  if (pthread_create(&thid, NULL, thread, argv) != 0) {
+    perror("pthread_create() error");
+    exit(1);
+  }
+
+  if (pthread_join(thid, &ret) != 0) {
+    perror("pthread_create() error");
+    exit(3);
+  }
+
+  printf("thread exited with '%s'\n", ret);
+
+
 
   return 0;
 }
