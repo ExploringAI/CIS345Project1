@@ -28,7 +28,8 @@ void *thread(void *arg) {
 
 
 
-
+// to use the Shell in Repl.it command is: ./main "m" "n"
+//where m and n are integers
 int main(int argc, char *argv[]) {
   printf("The early bird gets the worm!\n");
 
