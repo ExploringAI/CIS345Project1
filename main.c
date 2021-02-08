@@ -4,9 +4,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 
 
-/**
+double global_sum = 0; // setting the sum of both to 0
+
+/** TODO:
 Each thread computes the
 sum of n/m quadruple roots. Namely, the first thread (i.e. thread 0) computes the sum of quadruple roots from
 1 to n/m, the second thread (i.e. thread 1) computes the sum of the quadruple roots from n/m+1 to 2n/m, etc.
