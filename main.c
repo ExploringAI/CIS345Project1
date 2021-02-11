@@ -5,7 +5,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
-#include "params.h"
 
 
 double global_sum = 0; // setting the sum of both to 0
@@ -17,6 +16,7 @@ sum of n/m quadruple roots. Namely, the first thread (i.e. thread 0) computes th
 When a thread finishes its computation, it should print its partial sum and atomically add it to a shared global
 variable. 
 */
+/**
 void *thread(void *arg) {
   char *ret;
 
@@ -28,14 +28,14 @@ void *thread(void *arg) {
   }
   strcpy(ret, "This is a test");
   pthread_exit(ret);
-}
+}*/
 
 void * collector(void* arg)
 {
     int* a = (int*)arg;
     double quadrupleRoot = .25;
     double result = pow((double)a[0]/(double)a[1], quadrupleRoot);
-    printf("m = %d, n = %d and m/n = %f: so quadruple root of m/n = %f\n", a[0], a[1], (double)a[0]/(double)a[1], result);
+    printf("m=%d, n=%d, & m/n = %f: so quadruple root of m/n = %f\n", a[0], a[1], (double)a[0]/(double)a[1], result);
     pthread_exit(a);
 }
 
@@ -59,7 +59,6 @@ int main(int argc, char *argv[]) {
   pthread_t thid;
   void *ret;
   //creates instance of params structure
-  struct PARAMS inputThread = {0, ' ', 0};
 
   if (pthread_create(&thid, NULL, thread, argv) != 0) {
     perror("pthread_create() error");
