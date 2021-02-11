@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
+#include "params.h"
 
 
 double global_sum = 0; // setting the sum of both to 0
@@ -29,6 +30,14 @@ void *thread(void *arg) {
   pthread_exit(ret);
 }
 
+void * collector(void* arg)
+{
+    int* a = (int*)arg;
+    double quadrupleRoot = .25;
+    double result = pow((double)a[0]/(double)a[1], quadrupleRoot);
+    printf("m = %d, n = %d and m/n = %f: so quadruple root of m/n = %f\n", a[0], a[1], (double)a[0]/(double)a[1], result);
+    pthread_exit(a);
+}
 
 
 // to use the Shell in Repl.it command is: ./main "m" "n"
@@ -46,8 +55,11 @@ int main(int argc, char *argv[]) {
 
   /**TODO: Next, it creates m threads using pthread create() and each thread 
   computes the sum of n/m quadruple roots.*/
+  /**
   pthread_t thid;
   void *ret;
+  //creates instance of params structure
+  struct PARAMS inputThread = {0, ' ', 0};
 
   if (pthread_create(&thid, NULL, thread, argv) != 0) {
     perror("pthread_create() error");
@@ -60,7 +72,19 @@ int main(int argc, char *argv[]) {
   }
 
   printf("thread exited with '%s'\n", ret);
+*/
+  int i, mn[2];
+  mn[0] = m;
+  mn[1] = n;
+  pthread_t thread_tid[m];
 
+  for(i = 0; i < m; i++) {
+      pthread_create(&thread_tid[i], NULL, collector, (void*)(mn));
+  }
+
+  for(i = 0; i < m; i++) {
+      pthread_join(thread_tid[i], NULL);
+  }
 
 
   return 0;
