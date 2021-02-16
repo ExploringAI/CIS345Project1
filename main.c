@@ -73,15 +73,22 @@ int main(int argc, char *argv[]) {
 
   printf("thread exited with '%s'\n", ret);
 */
-  int i, mn[2];
+  int i, mn[2], j;
   mn[0] = m;
   mn[1] = n;
   pthread_t thread_tid[m];
   void* passResult;
   double result;
-
+ // Creates number of threads using m input 
   for(i = 0; i < m; i++) {
-      pthread_create(&thread_tid[i], NULL, collector, (void*)(mn));
+      pthread_create(&thread_tid[i], NULL, collector, (void*)(mn));// would it be (void*)&thread_tid)?
+      pthread_exit(NULL);
+      return(0);
+  }
+// waiting for the threads to finish
+  for (j = 0; j < m; j++ )
+  {
+    pthread_join(thread_tid[j], NULL);
   }
 
   for(i = 0; i < m; i++) {
