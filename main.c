@@ -32,12 +32,11 @@ void *thread(void *arg) {
 
 void * collector(void* arg)
 {
-    int* a = (int*)arg;
+    double* a = (double*)arg;
     double quadrupleRoot = .25;
-    double result[1];
-    result[0] = pow((double)a[0]/(double)a[1], quadrupleRoot);
-    printf("m=%d, n=%d, & m/n = %f: so quadruple root of m/n = %f\n", a[0], a[1], (double)a[0]/(double)a[1], result[0]);
-    pthread_exit((void*)(result));
+    a[2] = pow((double)a[0]/(double)a[1], quadrupleRoot);
+    printf("m=%f, n=%f, & m/n = %f: so quadruple root of m/n = %f\n", a[0], a[1], (double)a[0]/(double)a[1], a[2]);
+    pthread_exit(a);
 }
 
 
@@ -73,28 +72,23 @@ int main(int argc, char *argv[]) {
 
   printf("thread exited with '%s'\n", ret);
 */
-  int i, mn[2], j;
+  double  mn[3];
   mn[0] = m;
   mn[1] = n;
   pthread_t thread_tid[m];
-  void* passResult;
-  double result;
- // Creates number of threads using m input 
-  for(i = 0; i < m; i++) {
-      pthread_create(&thread_tid[i], NULL, collector, (void*)(mn));// would it be (void*)&thread_tid)?
-      pthread_exit(NULL);
-      return(0);
-  }
-// waiting for the threads to finish
-  for (j = 0; j < m; j++ )
-  {
-    pthread_join(thread_tid[j], NULL);
-  }
+  void * passResult;
 
-  for(i = 0; i < m; i++) {
+  for(int i = 0; i < m; i++) {
+      pthread_create(&thread_tid[i], NULL, collector, (void*)(mn));
+  }
+/**
+  for(int i = 0; i < m; i++) {
+      pthread_join(thread_tid[i], NULL);
+  }*/
+
+  for(int i = 0; i < m; i++) {
       pthread_join(thread_tid[i], &passResult);
-      result = ((double*)passResult)[0];
-      printf( "\nThis sh**t works?!: result = %f\n\n",  result);
+      printf( "\nThis sh**t works?!: result = %f\n\n",  mn[2]);
   }
 
 
