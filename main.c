@@ -32,10 +32,10 @@ void *thread(void *arg) {
 
 void * collector(void* arg)
 {
-    int* a = (int*)arg;
+    double* a = (double*)arg;
     double quadrupleRoot = .25;
     double result = pow((double)a[0]/(double)a[1], quadrupleRoot);
-    printf("m=%d, n=%d, & m/n = %f: so quadruple root of m/n = %f\n", a[0], a[1], (double)a[0]/(double)a[1], result);
+    printf("m=%f, n=%f, & m/n = %f: so quadruple root of m/n = %f\n", a[0], a[1], (double)a[0]/(double)a[1], result);
     pthread_exit(a);
 }
 
@@ -72,16 +72,16 @@ int main(int argc, char *argv[]) {
 
   printf("thread exited with '%s'\n", ret);
 */
-  int i, mn[2];
+  double  mn[3];
   mn[0] = m;
   mn[1] = n;
   pthread_t thread_tid[m];
 
-  for(i = 0; i < m; i++) {
+  for(int i = 0; i < m; i++) {
       pthread_create(&thread_tid[i], NULL, collector, (void*)(mn));
   }
 
-  for(i = 0; i < m; i++) {
+  for(int i = 0; i < m; i++) {
       pthread_join(thread_tid[i], NULL);
   }
 
